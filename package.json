@@ -1,0 +1,32 @@
+{
+   "name": "typegraphql-typeorm-test",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "ts-node src/index.ts"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/mistahselectah/typegraphql-typeorm-test.git"
+   },
+   "author": "",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/mistahselectah/typegraphql-typeorm-test/issues"
+   },
+   "homepage": "https://github.com/mistahselectah/typegraphql-typeorm-test#readme",
+   "dependencies": {
+      "graphql": "^15.3.0",
+      "mysql": "^2.14.1",
+      "reflect-metadata": "^0.1.10",
+      "type-graphql": "^1.0.0",
+      "typeorm": "0.2.28"
+   },
+   "devDependencies": {
+      "ts-node": "3.3.0",
+      "@types/node": "^8.0.29",
+      "typescript": "3.3.3333"
+   }
+}
