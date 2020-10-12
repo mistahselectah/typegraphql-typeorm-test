@@ -13,6 +13,13 @@ import {BookResolver} from "./resolvers/book-resolver";
     await connection.manager.save(author);
     console.log("Saved a new user with id: " + author.id);
 
+    const book = new Book();
+    book.name = "Dota 2";
+    book.pageCount = 100;
+    book.author = author;
+    DB.connection.manager.save(book);
+    console.log("Saved a new book with id: " + book.id);
+
     console.log("Loading users from the database...");
     const authors = await connection.manager.find(Author);
     console.log("Loaded users: ", authors);

@@ -17,6 +17,10 @@ export class Book extends BaseEntity {
     @Column()
     pageCount: number;
 
+    @Field(() => Number)
+    @Column()
+    authorId: number;
+
     @Field(() => Author)
     @ManyToOne(type => Author, author => author.books)
     author: Author;
