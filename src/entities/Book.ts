@@ -5,6 +5,7 @@ import {Author} from "./Author";
 @Entity()
 @ObjectType()
 export class Book extends BaseEntity {
+
     @Field(() => ID)
     @PrimaryGeneratedColumn()
     id: number;
@@ -21,7 +22,7 @@ export class Book extends BaseEntity {
     @Column()
     authorId: number;
 
-    @Field(() => Author)
+    @Field(() => Author, {nullable: true})
     @ManyToOne(type => Author, author => author.books)
     author: Author;
 

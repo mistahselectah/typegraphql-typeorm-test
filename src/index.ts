@@ -1,32 +1,14 @@
 import "reflect-metadata";
+import * as dotenv from 'dotenv';
 import {initDatabaseConnection} from "./utils/db-connection";
 import {buildSchema} from "type-graphql";
 import {ApolloServer} from "apollo-server";
 import {AuthorResolver} from "./resolvers/author-resolver";
 import {BookResolver} from "./resolvers/book-resolver";
+import {ApolloServerLoaderPlugin} from "type-graphql-dataloader";
+import {getConnection} from "typeorm";
 
-/*createConnection().then(async connection => {
-
-    console.log("Inserting a new user into the database...");
-    const author = new Author();
-    author.name = "Timbersaw";
-    await connection.manager.save(author);
-    console.log("Saved a new user with id: " + author.id);
-
-    const book = new Book();
-    book.name = "Dota 2";
-    book.pageCount = 100;
-    book.author = author;
-    DB.connection.manager.save(book);
-    console.log("Saved a new book with id: " + book.id);
-
-    console.log("Loading users from the database...");
-    const authors = await connection.manager.find(Author);
-    console.log("Loaded users: ", authors);
-
-    console.log("Here you can setup and run express/koa/any other framework.");
-
-}).catch(error => console.log(error));*/
+dotenv.config();
 
 (async () => {
 
@@ -41,9 +23,14 @@ import {BookResolver} from "./resolvers/book-resolver";
 
     const server = new ApolloServer({
         schema,
-        playground: true
+        playground: true,
+        plugins: [
+            ApolloServerLoaderPlugin({
+                typeormGetConnection: getConnection,
+            }),
+        ],
     });
 
-    const { url } = await server.listen(3000);
+    const { url } = await server.listen(Number(process.env.APOLLO_PORT || 3000));
     console.log(`GraphQL Server Started: ${url}`);
 })();
