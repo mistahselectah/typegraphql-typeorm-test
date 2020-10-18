@@ -1,10 +1,11 @@
 import { InputType, Field } from "type-graphql";
-import {Author} from "../entities/Author";
-import {ManyToOne} from "typeorm";
+import {MaxLength, MinLength} from "class-validator";
 
 @InputType()
 export class CreateBookInput {
     @Field(() => String)
+    @MinLength(1)
+    @MaxLength(255)
     name: string;
 
     @Field(() => Number)
