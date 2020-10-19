@@ -79,3 +79,21 @@ describe('Create Author Mutation', () => {
     authorId = res.data.createAuthor.id;
   });
 });
+
+describe('Get authors query', () => {
+  it('should get authors', async () => {
+    const getAuthors = gql`
+      query {
+        authors{
+          id,
+          name
+        }
+      }
+      `;
+
+    const res = await client.query({
+      query: getAuthors
+    });
+    expect(res.data.authors.length).toBeGreaterThan(0);
+  });
+});
