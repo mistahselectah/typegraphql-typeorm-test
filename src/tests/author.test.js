@@ -1,10 +1,11 @@
+require('dotenv').config({path: __dirname + '/../../.env'});
 const ApolloClient = require('apollo-boost').ApolloClient;
 const createHttpLink = require('apollo-link-http').createHttpLink;
 const InMemoryCache = require('apollo-boost').InMemoryCache;
 const gql = require('graphql-tag');
 const fetch = require('node-fetch');
 const client = new ApolloClient({
-  link: createHttpLink({uri: 'http://localhost:3000', fetch: fetch}),
+  link: createHttpLink({uri: 'http://localhost:' + process.env['APOLLO_PORT'], fetch: fetch}),
   cache: new InMemoryCache(),
   onError: (error) => {
     console.error(error)
