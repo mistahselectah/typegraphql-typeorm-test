@@ -4,12 +4,15 @@ const InMemoryCache = require('apollo-boost').InMemoryCache;
 const gql = require('graphql-tag');
 const fetch = require('node-fetch');
 const client = new ApolloClient({
-  link: createHttpLink({ uri: 'http://localhost:3000', fetch: fetch  }),
+  link: createHttpLink({uri: 'http://localhost:3000', fetch: fetch}),
   cache: new InMemoryCache(),
-  onError: (error) => { console.error(error) },
+  onError: (error) => {
+    console.error(error)
+  },
 });
 
 let authorId;
+let bookId;
 
 beforeAll(async () => {
   const createAuthor = gql`
@@ -30,6 +33,21 @@ beforeAll(async () => {
   });
   authorId = res.data.createAuthor.id;
   return res;
+});
+
+afterAll(async () => {
+  const deleteBook = gql(`mutation {deleteBook(id: ${bookId})}`);
+  const deleteAuthor = gql(`mutation {deleteAuthor(id: ${authorId})}`);
+
+  client.mutate({
+    mutation: deleteBook
+  })
+    .then(() => {
+      return client.mutate({
+        mutation: deleteAuthor
+      });
+    })
+    .catch(console.error);
 });
 
 describe('Create Book Mutation', () => {
@@ -136,7 +154,9 @@ describe('Create Book Mutation', () => {
     const res = await client.mutate({
       mutation: createBook
     });
+
     expect(res.data.createBook.name).toBe('Some Book');
+    bookId = res.data.createBook.id;
   });
 });
 
@@ -154,7 +174,7 @@ describe('Get books query', () => {
       `;
 
     const res = await client.query({
-      query : getBooks
+      query: getBooks
     });
     expect(res.data.books.length).toBeGreaterThan(0);
   });
@@ -175,7 +195,7 @@ describe('Get books query', () => {
       `;
 
     const res = await client.query({
-      query : getBooks
+      query: getBooks
     });
     expect(res.data.books.length).toBeGreaterThan(0);
     expect(res.data.books[0].author.name).toBeTruthy();

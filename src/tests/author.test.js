@@ -4,9 +4,21 @@ const InMemoryCache = require('apollo-boost').InMemoryCache;
 const gql = require('graphql-tag');
 const fetch = require('node-fetch');
 const client = new ApolloClient({
-  link: createHttpLink({ uri: 'http://localhost:3000', fetch: fetch  }),
+  link: createHttpLink({uri: 'http://localhost:3000', fetch: fetch}),
   cache: new InMemoryCache(),
-  onError: (error) => { console.error(error) },
+  onError: (error) => {
+    console.error(error)
+  },
+});
+
+let authorId;
+
+afterAll(async () => {
+  const deleteAuthor = gql(`mutation {deleteAuthor(id: ${authorId})}`);
+  client.mutate({
+    mutation: deleteAuthor
+  })
+    .catch(console.error);
 });
 
 describe('Create Author Mutation', () => {
@@ -64,5 +76,6 @@ describe('Create Author Mutation', () => {
       mutation: createAuthor
     });
     expect(res.data.createAuthor.name).toBe('Some Author');
+    authorId = res.data.createAuthor.id;
   });
 });

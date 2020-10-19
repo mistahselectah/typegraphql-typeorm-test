@@ -21,7 +21,7 @@ export class BookResolver {
     @FieldResolver()
     @Loader(async (authorIds) => {
         return getRepository(Author).find({
-            where: {  id: In([...authorIds]) }
+            where: {id: In([...authorIds])}
         });
     })
     author(@Root() book: Book) {
@@ -35,5 +35,11 @@ export class BookResolver {
         const book = getRepository(Book).create(data);
         await book.save();
         return book;
+    }
+
+    @Mutation(() => Number)
+    async deleteBook(@Arg("id") id: number) {
+        const result = await getRepository(Book).delete(id);
+        return result.affected;
     }
 }

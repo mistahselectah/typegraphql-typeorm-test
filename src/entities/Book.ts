@@ -22,7 +22,7 @@ export class Book extends BaseEntity {
     @Column()
     authorId: number;
 
-    @Field(() => Author, {nullable: true})
+    @Field(() => Author)
     @ManyToOne(type => Author, author => author.books)
     author: Author;
 

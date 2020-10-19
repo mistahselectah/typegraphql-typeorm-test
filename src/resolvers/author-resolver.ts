@@ -21,4 +21,10 @@ export class AuthorResolver {
         await author.save();
         return author;
     }
+
+    @Mutation(() => Number)
+    async deleteAuthor(@Arg("id") id: number) {
+        const result = await getRepository(Author).delete(id);
+        return result.affected;
+    }
 }
